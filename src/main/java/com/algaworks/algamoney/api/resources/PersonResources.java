@@ -17,37 +17,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algamoney.api.event.ResourceEventCreated;
-import com.algaworks.algamoney.api.model.Category;
-import com.algaworks.algamoney.api.repository.CategoryRepository;
+import com.algaworks.algamoney.api.model.Person;
+import com.algaworks.algamoney.api.repository.PersonRepository;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryResources {
+@RequestMapping("/person")
+public class PersonResources {
 	
 	@Autowired
-	CategoryRepository categoryRepository;
+	PersonRepository personRepository;
 	
 	@Autowired
 	ApplicationEventPublisher publisher;
 	
 	@GetMapping
-	public List<Category> list() {
-		return categoryRepository.findAll();
+	public ResponseEntity<List<Person>> listPerson(){
+		return ResponseEntity.ok().body(personRepository.findAll());
 	}
 	
 	@PostMapping
-	public ResponseEntity<Category> saveCategory(@Valid @RequestBody Category category, HttpServletResponse response) {
-		category = categoryRepository.save(category);
-		publisher.publishEvent(new ResourceEventCreated(this, response, category.getId() ));
-		return ResponseEntity.status(HttpStatus.CREATED).body(category);
+	public ResponseEntity<Person> savePerson(@Valid @RequestBody Person person, HttpServletResponse response) {
+		person = personRepository.save(person);
+		publisher.publishEvent(new ResourceEventCreated(this, response, person.getId()));
+		return ResponseEntity.status(HttpStatus.CREATED).body(person);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id) {
-		Category category = categoryRepository.findById(id).orElse(null);
-		if(category == null) {
+	public ResponseEntity<Person> findById(@PathVariable Long id){
+		Person person = personRepository.findById(id).orElse(null);
+		if(person == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(category);
+		return ResponseEntity.ok().body(person);
 	}
+	
 }
