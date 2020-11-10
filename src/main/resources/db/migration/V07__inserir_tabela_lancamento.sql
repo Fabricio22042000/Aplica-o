@@ -1,0 +1,2 @@
+INSERT INTO lancamento (descricao, data_vencimento, data_pagamento, valor, observacao, tipo, id_categoria, id_pessoa) VALUES ('Salário Mensal','2017-06-10',NULL,6500,'Distribuição de lucros','RECEITA', 1, 9);
+INSERT INTO lancamento (descricao, data_vencimento, data_pagamento, valor, observacao, tipo, id_categoria, id_pessoa) VALUES ('Bahamas','2017-02-10','2017-02-10',100.32,NULL,'Despesa', 2, 6);

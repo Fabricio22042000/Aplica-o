@@ -39,7 +39,7 @@ public class Person {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public boolean isAtivo() {
+	public boolean getIsAtivo() {
 		return isAtivo;
 	}
 	public void setIsAtivo(boolean isAtivo) {
