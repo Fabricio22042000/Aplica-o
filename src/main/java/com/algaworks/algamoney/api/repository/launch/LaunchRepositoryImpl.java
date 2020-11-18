@@ -16,6 +16,9 @@ import com.algaworks.algamoney.api.model.Launch;
 import com.algaworks.algamoney.api.repository.filter.LaunchFilter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 	
@@ -23,7 +26,7 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 	private EntityManager manager;
 	
 	@Override
-	public List<Launch> filter(LaunchFilter launchFilter) {
+	public Page<Launch> filter(LaunchFilter launchFilter, Pageable pageable) {//if i don't pass none value, return the list of all launch
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Launch> criteria = builder.createQuery(Launch.class);
 		Root<Launch> root = criteria.from(Launch.class);
@@ -32,7 +35,8 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 		criteria.where(predicate);
 		
 		TypedQuery<Launch> query = manager.createQuery(criteria);
-		return query.getResultList(); //if the list of predicates equal zero, return list of all the launch, else return list of predicates
+		addPaginationsRestrictions(query, pageable);
+		return new PageImpl<>(query.getResultList(), pageable, totalRegistry(launchFilter));
 	}
 	
 	private Predicate[] createPredicates(CriteriaBuilder builder, LaunchFilter launchFilter, Root<Launch> root) {
@@ -54,6 +58,28 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 		}
 		
 		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	
+	private Long totalRegistry(LaunchFilter launchFilter) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+		Root<Launch> root = criteria.from(Launch.class);
+		
+		Predicate[] predicates = createPredicates(builder, launchFilter, root);
+		criteria.where(predicates);
+		
+		criteria.select(builder.count(root));
+		
+		return manager.createQuery(criteria).getSingleResult();
+	}
+	
+	private void addPaginationsRestrictions(TypedQuery<Launch> query, Pageable pageable) {
+		int totalElementsInPage = pageable.getPageSize();
+		int pageNumber = pageable.getPageNumber();
+		int getNextElement = totalElementsInPage * pageNumber;
+		
+		query.setMaxResults(totalElementsInPage);
+		query.setFirstResult(getNextElement);
 	}
 
 }
