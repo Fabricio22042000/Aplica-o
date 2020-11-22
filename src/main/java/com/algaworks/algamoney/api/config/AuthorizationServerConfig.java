@@ -13,7 +13,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -23,8 +24,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
-	
-	private TokenStore tokenStore = new InMemoryTokenStore();
 	
 	
 	@Override
@@ -40,16 +39,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
-		.tokenStore(tokenStore)
+		.tokenStore(tokenStore())
+		.accessTokenConverter(accessTokenConverter())
 		.authenticationManager(authenticationManager);
 	}
 	
-    @Bean
+	@Bean
+    public TokenStore tokenStore() {
+    	return new JwtTokenStore(accessTokenConverter());
+    }
+	
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+    	JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+    	jwtAccessTokenConverter.setSigningKey("algaworks");
+    	return jwtAccessTokenConverter;
+    }
+
+	@Bean
     @Primary
     public ResourceServerTokenServices tokenServices() {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setSupportRefreshToken(true);
-        tokenServices.setTokenStore(this.tokenStore);
+        tokenServices.setTokenStore(this.tokenStore());
         return tokenServices;
     }
 	
