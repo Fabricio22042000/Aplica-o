@@ -58,6 +58,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     	return jwtAccessTokenConverter;
     }
 
+	
 	@Bean
     @Primary
     public ResourceServerTokenServices tokenServices() {
