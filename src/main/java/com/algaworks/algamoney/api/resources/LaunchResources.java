@@ -31,6 +31,7 @@ import com.algaworks.algamoney.api.repository.LaunchRepository;
 import com.algaworks.algamoney.api.repository.filter.LaunchFilter;
 import com.algaworks.algamoney.api.service.LaunchService;
 import com.algaworks.algamoney.api.service.exceptions.PersonNotActiveOrNotExists;
+import com.algaworks.algamoney.api.summary.SummaryLaunch;
 import com.algaworks.algamoney.api.model.Error;
 
 @RestController
@@ -54,6 +55,12 @@ public class LaunchResources {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Page<Launch> search(LaunchFilter launchFilter, Pageable pageable){
 		return launchRepository.filter(launchFilter, pageable);
+	}
+	
+	@GetMapping(params = "summary")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public Page<SummaryLaunch> summary(LaunchFilter launchFilter, Pageable pageable){
+		return launchRepository.summary(launchFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")

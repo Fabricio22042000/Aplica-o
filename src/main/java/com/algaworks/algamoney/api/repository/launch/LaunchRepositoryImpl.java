@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import com.algaworks.algamoney.api.model.Launch;
 import com.algaworks.algamoney.api.repository.filter.LaunchFilter;
+import com.algaworks.algamoney.api.summary.SummaryLaunch;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,33 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 		
 		TypedQuery<Launch> query = manager.createQuery(criteria);
 		addPaginationsRestrictions(query, pageable);
+		return new PageImpl<>(query.getResultList(), pageable, totalRegistry(launchFilter));
+	}
+	
+	@Override
+	public Page<SummaryLaunch> summary(LaunchFilter launchFilter, Pageable pageable) {
+		CriteriaBuilder builder = manager.getCriteriaBuilder();
+		CriteriaQuery<SummaryLaunch> criteria = builder.createQuery(SummaryLaunch.class);
+		Root<Launch> root = criteria.from(Launch.class);
+		
+		criteria.select(builder.construct(SummaryLaunch.class, 
+				root.get("id"),
+				root.get("description"),
+				root.get("dueDate"),
+				root.get("payDate"),
+				root.get("value"),
+				root.get("observation"),
+				root.get("kindLaunch"),
+				root.get("category").get("name"),
+				root.get("person").get("name")
+				));
+		
+		Predicate[] predicate = createPredicates(builder, launchFilter, root);
+		criteria.where(predicate);
+		
+		TypedQuery<SummaryLaunch> query = manager.createQuery(criteria);
+		addPaginationsRestrictions(query, pageable);
+		
 		return new PageImpl<>(query.getResultList(), pageable, totalRegistry(launchFilter));
 	}
 	
@@ -73,7 +101,7 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 		return manager.createQuery(criteria).getSingleResult();
 	}
 	
-	private void addPaginationsRestrictions(TypedQuery<Launch> query, Pageable pageable) {
+	private void addPaginationsRestrictions(TypedQuery<?> query, Pageable pageable) {
 		int totalElementsInPage = pageable.getPageSize();
 		int pageNumber = pageable.getPageNumber();
 		int getNextElement = totalElementsInPage * pageNumber;
@@ -81,5 +109,6 @@ public class LaunchRepositoryImpl implements LaunchRepositoryQuery{
 		query.setMaxResults(totalElementsInPage);
 		query.setFirstResult(getNextElement);
 	}
+
 
 }
