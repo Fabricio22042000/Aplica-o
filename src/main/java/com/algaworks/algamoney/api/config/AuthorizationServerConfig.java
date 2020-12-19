@@ -62,10 +62,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.authenticationManager(authenticationManager);
 	}
 	
-	@Bean
-	private TokenEnhancer tokenEnhancer() {
-		return new CustomTokenEnhancer();
-	}
 
 	@Bean
     public TokenStore tokenStore() {
@@ -79,6 +75,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     	return jwtAccessTokenConverter;
     }
 
+	@Bean
+	public TokenEnhancer tokenEnhancer() {
+		return new CustomTokenEnhancer();
+	}
 	
 	@Bean
     @Primary
