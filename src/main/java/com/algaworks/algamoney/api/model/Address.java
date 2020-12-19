@@ -1,16 +1,30 @@
 package com.algaworks.algamoney.api.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
 	
+	@Column(name = "logradouro")
 	private String publicSpace;
+	
+	@Column(name = "numero")
 	private String number;
+	
+	@Column(name = "complemento")
 	private String complement;
+	
+	@Column(name = "bairro")
 	private String neighborhood;
+	
+	@Column(name = "cep")
 	private String cep;
+	
+	@Column(name = "cidade")
 	private String city;
+	
+	@Column(name = "estado")
 	private String state;
 	
 	
