@@ -6,13 +6,13 @@ CREATE TABLE usuario (
   PRIMARY KEY (`idusuario`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `algamoneyapi`.`permissao` (
+CREATE TABLE permissao (
   `idpermissao` BIGINT(20) NOT NULL,
   `descricao` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`idpermissao`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `algamoneyapi`.`usuario_permissao`(
+CREATE TABLE usuario_permissao (
   `id_usuario` BIGINT(20) NOT NULL,
   `id_permissao` BIGINT(20) NOT NULL,
   PRIMARY KEY (`id_usuario`, `id_permissao`),
