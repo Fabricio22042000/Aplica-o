@@ -1,3 +1,3 @@
-ALTER TABLE `algamoneyapi`.`pessoa` 
+ALTER TABLE pessoa 
 ENGINE = InnoDB ;
 

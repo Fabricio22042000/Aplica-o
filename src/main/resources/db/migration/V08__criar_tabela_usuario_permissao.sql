@@ -1,4 +1,4 @@
-CREATE TABLE `algamoneyapi`.`usuario` (
+CREATE TABLE usuario (
   `idusuario` BIGINT(20) NOT NULL,
   `nome` VARCHAR(50) NOT NULL,
   `email` VARCHAR(150) NOT NULL,

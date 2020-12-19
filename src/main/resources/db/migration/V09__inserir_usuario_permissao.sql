@@ -1,4 +1,4 @@
-ALTER TABLE `algamoneyapi`.`usuario` 
+ALTER TABLE usuario 
 CHANGE COLUMN `senha` `senha` VARCHAR(150) NOT NULL ;
 
 INSERT INTO usuario(`idusuario`, `nome`, `email`, `senha`) VALUES (1,'Administrador', 'admin@gmail.com', '$2a$10$KjTcLpgAjHdkZA03ZTeoTuhxg3w3dkXsB4Xvjty5u5NEOLI4HtiFK');

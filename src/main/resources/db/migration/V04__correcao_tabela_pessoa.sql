@@ -1,4 +1,4 @@
-ALTER TABLE `algamoneyapi`.`pessoa` 
+ALTER TABLE pessoa 
 CHANGE COLUMN `logradouro` `logradouro` VARCHAR(45) NULL ,
 CHANGE COLUMN `numero` `numero` VARCHAR(45) NULL ,
 CHANGE COLUMN `complemento` `complemento` VARCHAR(45) NULL ,

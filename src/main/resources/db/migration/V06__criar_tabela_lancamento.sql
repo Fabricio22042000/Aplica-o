@@ -1,4 +1,4 @@
-CREATE TABLE `algamoneyapi`.`lancamento` (
+CREATE TABLE lancamento (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `descricao` VARCHAR(50) NOT NULL,
   `data_vencimento` DATE NOT NULL,
