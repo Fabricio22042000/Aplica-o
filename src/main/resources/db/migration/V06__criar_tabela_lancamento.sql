@@ -9,16 +9,16 @@ CREATE TABLE lancamento (
   `id_categoria` BIGINT(20) NOT NULL,
   `id_pessoa` BIGINT(20) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `id_categoria_idx` (`id_categoria` ASC) VISIBLE,
-  INDEX `id_pessoa_idx` (`id_pessoa` ASC) VISIBLE,
+  INDEX `id_categoria_idx` (`id_categoria` ASC),
+  INDEX `id_pessoa_idx` (`id_pessoa` ASC),
   CONSTRAINT `id_categoria`
     FOREIGN KEY (`id_categoria`)
-    REFERENCES `algamoneyapi`.`categoria` (`id`)
+    REFERENCES categoria (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `id_pessoa`
     FOREIGN KEY (`id_pessoa`)
-    REFERENCES `algamoneyapi`.`pessoa` (`id`)
+    REFERENCES pessoa (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
