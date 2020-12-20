@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
+		System.out.println("BEAN SENDO EXECUTADO");
 	   return super.authenticationManagerBean();
 	}
 	
