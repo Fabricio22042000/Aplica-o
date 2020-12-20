@@ -11,6 +11,6 @@ CREATE TABLE pessoa (
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
 
-INSERT INTO pessoa (`id`, `name`, `ativo`, `logradouro`, `numero`, `complemento`, `bairro`, `cep`, `cidade`, `estado`) VALUES ('1', 'Fabricio', '1', 'Rua francisco', '1595', '105', 'manaira', '58038521', 'João Pessoa', 'PB');
-INSERT INTO pessoa (`id`, `name`, `ativo`, `logradouro`, `numero`, `complemento`, `bairro`, `cep`, `cidade`, `estado`) VALUES ('2', 'Joana', '0', 'Maria Mendonca', '190', '90', 'Manaira', '78038568', 'João Pessoa', 'PB');
+INSERT INTO pessoa (`id`, `name`, `ativo`, `logradouro`, `numero`, `complemento`, `bairro`, `cep`, `cidade`, `estado`) VALUES ('1', 'Fabricio', true, 'Rua francisco', '1595', '105', 'manaira', '58.038-521', 'João Pessoa', 'PB');
+INSERT INTO pessoa (`id`, `name`, `ativo`, `logradouro`, `numero`, `complemento`, `bairro`, `cep`, `cidade`, `estado`) VALUES ('2', 'Joana', true, 'Maria Mendonca', '190', '90', 'Manaira', '78.038-568', 'João Pessoa', 'PB');
 

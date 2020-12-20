@@ -1,12 +1,12 @@
 package com.algaworks.algamoney.api.resources;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algamoney.api.event.ResourceEventCreated;
 import com.algaworks.algamoney.api.model.Person;
 import com.algaworks.algamoney.api.repository.PersonRepository;
+import com.algaworks.algamoney.api.repository.filter.PersonFilter;
 import com.algaworks.algamoney.api.service.PersonService;
 
 @RestController
@@ -38,10 +39,11 @@ public class PersonResources {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
+
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-	public ResponseEntity<List<Person>> listPerson(){
-		return ResponseEntity.ok().body(personRepository.findAll());
+	public Page<Person> search(PersonFilter personFilter, Pageable pageable){
+		return personRepository.filter(personFilter, pageable);
 	}
 	
 	@PostMapping

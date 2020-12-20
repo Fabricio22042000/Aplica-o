@@ -33,7 +33,7 @@ public class CategoryResources {
 	
 	
 	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')")
 	public List<Category> list() {
 		return categoryRepository.findAll();
 	}
