@@ -1,5 +1,6 @@
 package com.algaworks.algamoney.api.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,24 @@ public class LaunchService {
 	@Autowired
 	private PersonRepository personRepository;
 
+	
+	public Launch update(Long id, Launch launch) {
+		Launch launchDataBase = findById(id);
+		if(!launch.getPerson().equals(launchDataBase.getPerson())) {
+			findPersonById(launch.getPerson().getId());
+		}
+		BeanUtils.copyProperties(launch, launchDataBase, "id");
+		
+		return launchRepository.save(launchDataBase);
+	}
+	
+	public Person findPersonById(Long id) {
+		Person personDataBase = personRepository.findById(id).orElse(null);
+		if(personDataBase == null || !personDataBase.getIsAtivo()) {
+			throw new PersonNotActiveOrNotExists();
+		}
+		return personDataBase;
+	}
 	
 	public Launch findById(Long id) {
 		Launch launchDataBase = launchRepository.findById(id).orElse(null);

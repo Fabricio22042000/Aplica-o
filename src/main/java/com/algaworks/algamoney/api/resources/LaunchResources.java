@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -83,6 +85,17 @@ public class LaunchResources {
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO') and #oauth2.hasScope('write')")
 	public void delete(@PathVariable Long id){
 		launchRepository.deleteById(id);
+	}
+	
+	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO')")
+	public ResponseEntity<Launch> update(@PathVariable Long id, @Valid @RequestBody Launch launch){
+		try{
+			launchService.update(id, launch);
+		}catch(EmptyResultDataAccessException | PersonNotActiveOrNotExists e) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().build();
 	}
 	
 	//Handle person not active or person not exists
